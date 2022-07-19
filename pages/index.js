@@ -1,23 +1,26 @@
 import Head from 'next/head'
 import Nav from "../components/Nav";
-import Form from "../components/Form";
-import {useEffect, useState} from 'react';
+import SelectBox from "../components/SelectBox";
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [hasUfo, setHasUfo] = useState(false);
+  const [coinPerDay, setCoinPerDay] = useState(0)
   const [state, setState] = useState({
     xenos: 0,
     femi: 0,
     lochias: 0,
     olu: 0,
     afe: 0,
-    ufo: false
   })
   const [factionEarnings, setFactionEarnings] = useState({
     xenos: 0,
     femi: 0,
     lochias: 0,
     olu: 0,
+    ufo: 0
   })
+
   const ogEarningValue = {
     xenos: 0.25,
     femi: 0.5,
@@ -25,69 +28,47 @@ export default function Home() {
     olu: 1,
     afe: 0.1,
   }
-  const [coinPerDay, setCoinPerDay] = useState(0)
 
   useEffect(() => {
-    calculateFrenCoin()
-  }, [state, coinPerDay])
+    calculateFrenCoin(hasUfo)
+  }, [state, hasUfo])
 
   useEffect(() => {
+    calculateAfeEarnings(hasUfo)
+  }, [factionEarnings, hasUfo])
+
+  function calculateAfeEarnings(userHasUfo) {
     let coinEarnings = 0;
-    coinEarnings = (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu)
-    console.log("coinEarnings 38", coinEarnings)
+    if (userHasUfo) coinEarnings = 1;
+    coinEarnings += (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu)
     if (state.afe > 0) {
       let afeEarnings = 0
-      state.ufo ? afeEarnings = state.afe * ogEarningValue.afe : afeEarnings = (state.afe * ogEarningValue.afe)
-      console.log("afeEarnings: ", afeEarnings)
-      console.log("CoinEarnings: ", coinEarnings)
+      afeEarnings = state.afe * ogEarningValue.afe
       setCoinPerDay((coinEarnings > 0 ? coinEarnings + 1 : 1) * (afeEarnings))
     } else {
       setCoinPerDay(0)
     }
-  }, [factionEarnings, state])
+  }
 
-  function calculateFrenCoin() {
-    const { xenos, femi, lochias, olu, afe, ufo } = state;
-    let xenosEarnings = 0;
-    let femiEarnings = 0;
-    let lochiasEarnings = 0;
-    let oluEarnings = 0;
-
-
-
-    if (xenos) {
-      xenosEarnings = ogEarningValue.xenos;
-      if (xenos > 1) {
-        let xenosExtraEarnings = (xenos - 1) * (ogEarningValue.xenos / 10);
-        xenosEarnings += xenosExtraEarnings;
+  function calculateFrenCoin(userHasUfo) {
+    function calculateEarningPerFaction(faction) {
+      let thisFactionEarnings = 0;
+      if (state[faction] > 0) {
+        thisFactionEarnings = ogEarningValue[faction];
+        if (state[faction] > 1) {
+          let thisFactionExtraEarnings = (state[faction] - 1) * (ogEarningValue[faction] / 10);
+          thisFactionEarnings += thisFactionExtraEarnings;
+        }
+        setFactionEarnings(prev => ({ ...prev, [faction]: thisFactionEarnings }))
+      } else {
+        setFactionEarnings(prev => ({ ...prev, [faction]: 0 }))
       }
-      setFactionEarnings({ ...factionEarnings, xenos: xenosEarnings })
     }
-    if (femi) {
-      femiEarnings = ufo ? ogEarningValue.femi * 2 : ogEarningValue.femi;
-      if (femi > 1) {
-        let femiExtraEarnings = (femi - 1) * (femiEarnings / 10);
-        femiEarnings += femiExtraEarnings;
-      }
-      setFactionEarnings({ ...factionEarnings, femi: femiEarnings })
+    const factionsArray = ['xenos', 'femi', 'lochias', 'olu'];
+    for (const faction of factionsArray) {
+      calculateEarningPerFaction(faction);
     }
-    if (lochias) {
-      lochiasEarnings = ogEarningValue.lochias;
-      if (lochias > 1) {
-        let lochiasExtraEarnings = (lochias - 1) * (ogEarningValue.lochias / 10);
-        lochiasEarnings += lochiasExtraEarnings;
-      }
-      setFactionEarnings({ ...factionEarnings, lochias: lochiasEarnings })
-    }
-    if (olu) {
-      oluEarnings = ogEarningValue.olu;
-      if (olu > 1) {
-        let oluExtraEarnings = (olu - 1) * (ogEarningValue.olu / 10);
-        oluEarnings += oluExtraEarnings;
-      }
-      setFactionEarnings({ ...factionEarnings, olu: oluEarnings })
-    }
-    console.log("factionEarnings", factionEarnings)
+    calculateAfeEarnings(userHasUfo);
   }
 
   return (
@@ -105,12 +86,42 @@ export default function Home() {
             <p>Enter the number of each fren you have in the form below</p>
           </div>
         </section>
-        <Form state={state} setState={setState} />
-        {/*<CoinOutput coinPerDay={coinPerDay} />*/}
+        <section className="flex justify-center">
+          <form className="flex flex-col p-6 max-w-min">
+            <div className="flex">
+              <SelectBox label="Xenos" state={state} setState={setState} />
+              <SelectBox label="Femi" state={state} setState={setState} />
+              <SelectBox label="Lochias" state={state} setState={setState} />
+              <SelectBox label="Olu" state={state} setState={setState} />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex justify-center">
+                <div>
+                  <span className="flex justify-center my-4">X</span>
+                  <div className="flex justify-center">
+                    <SelectBox label="AFE" state={state} setState={setState} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center mt-6">
+                <div>
+                  <input
+                    name="ufo"
+                    className="h-6 w-6"
+                    type="checkbox"
+                    defaultChecked={hasUfo}
+                    onChange={() => setHasUfo(!hasUfo)}
+                  />
+                  <label className="ml-2 align-top">I have a UFO 🛸 </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
         <section className="flex justify-center">
           <div className="flex flex-col text-center text-lg">
             <h3>You will earn</h3>
-            <h2 className="text-3xl">{coinPerDay.toString().substring(0, 4)}</h2>
+            <h2 className="text-3xl">{coinPerDay.toString().substring(0, 5)}</h2>
             <h3>Fren Coin per day</h3>
           </div>
         </section>
