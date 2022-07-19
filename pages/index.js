@@ -29,14 +29,15 @@ export default function Home() {
 
   useEffect(() => {
     calculateFrenCoin()
-  }, [state])
+  }, [state, coinPerDay])
 
   useEffect(() => {
     let coinEarnings = 0;
     coinEarnings = (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu)
     console.log("coinEarnings 38", coinEarnings)
     if (state.afe > 0) {
-      let afeEarnings = state.afe * ogEarningValue.afe
+      let afeEarnings = 0
+      state.ufo ? afeEarnings = state.afe * ogEarningValue.afe : afeEarnings = (state.afe * ogEarningValue.afe)
       console.log("afeEarnings: ", afeEarnings)
       console.log("CoinEarnings: ", coinEarnings)
       setCoinPerDay((coinEarnings > 0 ? coinEarnings + 1 : 1) * (afeEarnings))
@@ -63,9 +64,9 @@ export default function Home() {
       setFactionEarnings({ ...factionEarnings, xenos: xenosEarnings })
     }
     if (femi) {
-      femiEarnings = ogEarningValue.femi;
+      femiEarnings = ufo ? ogEarningValue.femi * 2 : ogEarningValue.femi;
       if (femi > 1) {
-        let femiExtraEarnings = (femi - 1) * (ogEarningValue.femi / 10);
+        let femiExtraEarnings = (femi - 1) * (femiEarnings / 10);
         femiEarnings += femiExtraEarnings;
       }
       setFactionEarnings({ ...factionEarnings, femi: femiEarnings })
@@ -109,7 +110,7 @@ export default function Home() {
         <section className="flex justify-center">
           <div className="flex flex-col text-center text-lg">
             <h3>You will earn</h3>
-            <h2 className="text-3xl">{coinPerDay}</h2>
+            <h2 className="text-3xl">{coinPerDay.toString().substring(0, 4)}</h2>
             <h3>Fren Coin per day</h3>
           </div>
         </section>
