@@ -14,16 +14,16 @@ export default function SelectBox({ label, state, setState }) {
 
   return (
     <div className="mx-3 w-24">
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700 text-center">
+      <label htmlFor={name} className="block text-sm font-medium text-center">
         {label}
       </label>
       <select
         id={`select-${name}`}
         name={name}
         className="
-        mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300
+        mt-1 block w-full pl-3 py-2 text-base border-gray-300
         focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
-        sm:text-sm rounded-sm
+        sm:text-sm rounded-sm text-center
         border-2"
         value={state[name]}
         onChange={(e) => handleChange(e)}

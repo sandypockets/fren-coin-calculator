@@ -80,24 +80,30 @@ export default function Home() {
       </Head>
       <main>
         <Nav />
-        <section className="pt-28 pb-12 flex justify-center">
+        <section className="pt-40 pb-8 md:pb-12 flex justify-center">
           <div>
-            <h2>Determine how much Fren coin you'll earn</h2>
-            <p>Enter the number of each fren you have in the form below</p>
+            <article className="text-center">
+              <h2 className="text-lg md:text-2xl mx-6 md:mx-0 mb-2">Check how much Fren coin you'll earn</h2>
+              <p className="text-md mx-8 md:mx-0 md:text-lg pt-3">Enter the amount of each fren faction you have in the form below</p>
+            </article>
           </div>
         </section>
         <section className="flex justify-center">
           <form className="flex flex-col p-6 max-w-min">
-            <div className="flex">
-              <SelectBox label="Xenos" state={state} setState={setState} />
-              <SelectBox label="Femi" state={state} setState={setState} />
-              <SelectBox label="Lochias" state={state} setState={setState} />
-              <SelectBox label="Olu" state={state} setState={setState} />
+            <div className="flex flex-row">
+              <div className="flex flex-col md:flex-row">
+                <SelectBox label="Xenos" state={state} setState={setState} />
+                <SelectBox label="Femi" state={state} setState={setState} />
+              </div>
+              <div className="flex flex-col md:flex-row">
+                <SelectBox label="Lochias" state={state} setState={setState} />
+                <SelectBox label="Olu" state={state} setState={setState} />
+              </div>
             </div>
             <div className="flex flex-col">
               <div className="flex justify-center">
                 <div>
-                  <span className="flex justify-center my-4">X</span>
+                  <span className="flex justify-center my-4 text-3xl">X</span>
                   <div className="flex justify-center">
                     <SelectBox label="AFE" state={state} setState={setState} />
                   </div>
@@ -107,7 +113,7 @@ export default function Home() {
                 <div>
                   <input
                     name="ufo"
-                    className="h-6 w-6"
+                    className="h-6 w-6 accent-green-600"
                     type="checkbox"
                     defaultChecked={hasUfo}
                     onChange={() => setHasUfo(!hasUfo)}
@@ -118,7 +124,7 @@ export default function Home() {
             </div>
           </form>
         </section>
-        <section className="flex justify-center">
+        <section className="mt-6 flex justify-center">
           <div className="flex flex-col text-center text-lg">
             <h3>You will earn</h3>
             <h2 className="text-3xl">{coinPerDay.toString().substring(0, 5)}</h2>
@@ -126,7 +132,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
     </div>
   )
 }

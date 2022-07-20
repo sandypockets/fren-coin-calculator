@@ -2,6 +2,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+https://alien-frens.gitbook.io/alien_frens_gitbook/fren-token/how-can-i-earn-fren-token
+
+https://alien-frens.gitbook.io/alien_frens_gitbook/ufos/what-is-a-ufo
+
 First, run the development server:
 
 ```bash
