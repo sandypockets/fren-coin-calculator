@@ -4,7 +4,6 @@ import SelectBox from "../components/SelectBox";
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [hasUfo, setHasUfo] = useState(false);
   const [coinPerDay, setCoinPerDay] = useState(0)
   const [state, setState] = useState({
     xenos: 0,
@@ -12,6 +11,7 @@ export default function Home() {
     lochias: 0,
     olu: 0,
     afe: 0,
+    ufo: 0
   })
   const [factionEarnings, setFactionEarnings] = useState({
     xenos: 0,
@@ -27,48 +27,52 @@ export default function Home() {
     lochias: 0.75,
     olu: 1,
     afe: 0.1,
+    ufo: 1
   }
 
   useEffect(() => {
-    calculateFrenCoin(hasUfo)
-  }, [state, hasUfo])
+    calculateFrenCoin()
+  }, [state])
 
   useEffect(() => {
-    calculateAfeEarnings(hasUfo)
-  }, [factionEarnings, hasUfo])
+    calculateAfeEarnings()
+  }, [factionEarnings, state])
 
-  function calculateAfeEarnings(userHasUfo) {
-    let coinEarnings = 0;
-    if (userHasUfo) coinEarnings = 1;
-    coinEarnings += (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu)
+  function calculateAfeEarnings() {
+    let coinEarnings = 1;
+    coinEarnings += (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu + factionEarnings.ufo)
     if (state.afe > 0) {
       let afeEarnings = 0
       afeEarnings = state.afe * ogEarningValue.afe
-      setCoinPerDay((coinEarnings > 0 ? coinEarnings + 1 : 1) * (afeEarnings))
+      setCoinPerDay((coinEarnings) * (afeEarnings))
     } else {
       setCoinPerDay(0)
     }
   }
 
-  function calculateFrenCoin(userHasUfo) {
+  function calculateFrenCoin() {
     function calculateEarningPerFaction(faction) {
       let thisFactionEarnings = 0;
       if (state[faction] > 0) {
         thisFactionEarnings = ogEarningValue[faction];
         if (state[faction] > 1) {
-          let thisFactionExtraEarnings = (state[faction] - 1) * (ogEarningValue[faction] / 10);
-          thisFactionEarnings += thisFactionExtraEarnings;
+          if (faction === "ufo") {
+            thisFactionEarnings = state[faction] * ogEarningValue[faction];
+          } else {
+            let thisFactionExtraEarnings = (state[faction] - 1) * (ogEarningValue[faction] / 10);
+            thisFactionEarnings += thisFactionExtraEarnings;
+          }
         }
         setFactionEarnings(prev => ({ ...prev, [faction]: thisFactionEarnings }))
       } else {
         setFactionEarnings(prev => ({ ...prev, [faction]: 0 }))
       }
     }
-    const factionsArray = ['xenos', 'femi', 'lochias', 'olu'];
+    const factionsArray = ['xenos', 'femi', 'lochias', 'olu', 'ufo'];
     for (const faction of factionsArray) {
       calculateEarningPerFaction(faction);
     }
-    calculateAfeEarnings(userHasUfo);
+    calculateAfeEarnings();
   }
 
   return (
@@ -100,25 +104,17 @@ export default function Home() {
                 <SelectBox label="Olu" state={state} setState={setState} />
               </div>
             </div>
+            <div className="flex justify-center mt-6">
+              <SelectBox label="UFO" state={state} setState={setState} />
+            </div>
             <div className="flex flex-col">
               <div className="flex justify-center">
                 <div>
                   <span className="flex justify-center my-4 text-3xl">X</span>
                   <div className="flex justify-center">
                     <SelectBox label="AFE" state={state} setState={setState} />
+
                   </div>
-                </div>
-              </div>
-              <div className="flex justify-center mt-6">
-                <div>
-                  <input
-                    name="ufo"
-                    className="h-6 w-6 accent-green-600"
-                    type="checkbox"
-                    defaultChecked={hasUfo}
-                    onChange={() => setHasUfo(!hasUfo)}
-                  />
-                  <label className="ml-2 align-top">I have a UFO 🛸 </label>
                 </div>
               </div>
             </div>

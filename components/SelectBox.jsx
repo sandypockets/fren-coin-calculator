@@ -2,8 +2,9 @@ import { useEffect } from "react";
 
 export default function SelectBox({ label, state, setState }) {
 
-  const nums = Array.from(Array(21).keys())
   const name = label.toLowerCase();
+  const optionNums = name === 'ufo' ? 3 : 21;
+  const nums = Array.from(Array(optionNums).keys())
 
   function handleChange(e) {
     const val = e.target.value;
@@ -15,7 +16,7 @@ export default function SelectBox({ label, state, setState }) {
   return (
     <div className="mx-3 w-24">
       <label htmlFor={name} className="block text-sm font-medium text-center">
-        {label}
+        {label}{name === 'ufo' && "🛸"}
       </label>
       <select
         id={`select-${name}`}
