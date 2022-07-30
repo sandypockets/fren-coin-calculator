@@ -87,7 +87,7 @@ export default function Home() {
         <section className="pt-40 pb-8 md:pb-12 flex justify-center">
           <div>
             <article className="text-center">
-              <h2 className="text-lg md:text-2xl mx-6 md:mx-0 mb-2">Check how much Fren coin you'll earn</h2>
+              <h2 className="text-lg md:text-2xl mx-6 md:mx-0 mb-2">Check how much Fren coin you&apos;ll earn</h2>
               <p className="text-md mx-8 md:mx-0 md:text-lg pt-3">Enter the amount of each fren faction you have in the form below</p>
             </article>
           </div>
