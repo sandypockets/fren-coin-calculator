@@ -113,7 +113,6 @@ export default function Home() {
                   <span className="flex justify-center my-4 text-3xl">X</span>
                   <div className="flex justify-center">
                     <SelectBox label="AFE" state={state} setState={setState} />
-
                   </div>
                 </div>
               </div>
