@@ -1,5 +1,7 @@
 # Unofficial Fren Coin Calculator
-A calculator for determining how much a given Alien Frens faction/collection combination will yield. 
+A calculator for determining how much a given combination of Alien Frens faction/collections will yield. 
+
+<img width="1234" alt="Screen Shot 2022-07-29 at 11 14 05 PM" src="https://user-images.githubusercontent.com/41454557/181870456-2570805c-0912-4844-ade7-25b7f522de33.png">
 
 ## Tech stack
 * [React](https://reactjs.org/)
