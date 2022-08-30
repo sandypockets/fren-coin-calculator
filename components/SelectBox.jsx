@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 export default function SelectBox({ label, state, setState }) {
 
   const name = label.toLowerCase();
@@ -16,7 +14,7 @@ export default function SelectBox({ label, state, setState }) {
   return (
     <div className="mx-3 w-24">
       <label htmlFor={name} className="block text-sm font-medium text-center">
-        {label}{name === 'ufo' && "🛸"}
+        {label === "oneofone" ? "1 of 1" : label}{name === 'ufo' && "🛸"}
       </label>
       <select
         id={`select-${name}`}

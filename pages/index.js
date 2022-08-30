@@ -11,14 +11,16 @@ export default function Home() {
     lochias: 0,
     olu: 0,
     afe: 0,
-    ufo: 0
+    ufo: 0,
+    oneOfOne: 0
   })
   const [factionEarnings, setFactionEarnings] = useState({
     xenos: 0,
     femi: 0,
     lochias: 0,
     olu: 0,
-    ufo: 0
+    ufo: 0,
+    oneOfOne: 0
   })
 
   const ogEarningValue = {
@@ -27,7 +29,8 @@ export default function Home() {
     lochias: 0.75,
     olu: 1,
     afe: 0.1,
-    ufo: 1
+    ufo: 1,
+    oneofone: 1.5
   }
 
   useEffect(() => {
@@ -39,8 +42,9 @@ export default function Home() {
   }, [factionEarnings, state])
 
   function calculateAfeEarnings() {
-    let coinEarnings = 1;
-    coinEarnings += (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu + factionEarnings.ufo)
+    const base = 1;
+    let coinEarnings = 0;
+    coinEarnings += base + (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu + factionEarnings.ufo + factionEarnings.oneofone)
     if (state.afe > 0) {
       let afeEarnings = 0
       afeEarnings = state.afe * ogEarningValue.afe
@@ -68,7 +72,7 @@ export default function Home() {
         setFactionEarnings(prev => ({ ...prev, [faction]: 0 }))
       }
     }
-    const factionsArray = ['xenos', 'femi', 'lochias', 'olu', 'ufo'];
+    const factionsArray = ['xenos', 'femi', 'lochias', 'olu', 'ufo', 'oneofone'];
     for (const faction of factionsArray) {
       calculateEarningPerFaction(faction);
     }
@@ -106,6 +110,7 @@ export default function Home() {
             </div>
             <div className="flex justify-center mt-6">
               <SelectBox label="UFO" state={state} setState={setState} />
+              <SelectBox label="oneofone" state={state} setState={setState} />
             </div>
             <div className="flex flex-col">
               <div className="flex justify-center">
