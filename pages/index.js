@@ -12,7 +12,8 @@ export default function Home() {
     olu: 0,
     afe: 0,
     ufo: 0,
-    oneOfOne: 0
+    afeoneofone: 0,
+    afoneofone: 0
   })
   const [factionEarnings, setFactionEarnings] = useState({
     xenos: 0,
@@ -20,7 +21,8 @@ export default function Home() {
     lochias: 0,
     olu: 0,
     ufo: 0,
-    oneOfOne: 0
+    afeoneofone: 0,
+    afoneofone: 0
   })
 
   const ogEarningValue = {
@@ -30,7 +32,8 @@ export default function Home() {
     olu: 1,
     afe: 0.1,
     ufo: 1,
-    oneofone: 1.5
+    afeoneofone: 0.2,
+    afoneofone: 1.25
   }
 
   useEffect(() => {
@@ -44,10 +47,10 @@ export default function Home() {
   function calculateAfeEarnings() {
     const base = 1;
     let coinEarnings = 0;
-    coinEarnings += base + (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu + factionEarnings.ufo + factionEarnings.oneofone)
-    if (state.afe > 0) {
+    coinEarnings += base + (factionEarnings.xenos + factionEarnings.femi + factionEarnings.lochias + factionEarnings.olu + factionEarnings.ufo + factionEarnings.afoneofone)
+    if (state.afe > 0 || state.afeoneofone > 0) {
       let afeEarnings = 0
-      afeEarnings = state.afe * ogEarningValue.afe
+      afeEarnings = (state.afe * ogEarningValue.afe) + (state.afeoneofone * factionEarnings.afeoneofone)
       setCoinPerDay((coinEarnings) * (afeEarnings))
     } else {
       setCoinPerDay(0)
@@ -72,7 +75,7 @@ export default function Home() {
         setFactionEarnings(prev => ({ ...prev, [faction]: 0 }))
       }
     }
-    const factionsArray = ['xenos', 'femi', 'lochias', 'olu', 'ufo', 'oneofone'];
+    const factionsArray = ['xenos', 'femi', 'lochias', 'olu', 'ufo', 'afe', 'afeoneofone', 'afoneofone'];
     for (const faction of factionsArray) {
       calculateEarningPerFaction(faction);
     }
@@ -110,7 +113,7 @@ export default function Home() {
             </div>
             <div className="flex justify-center mt-6">
               <SelectBox label="UFO" state={state} setState={setState} />
-              <SelectBox label="oneofone" state={state} setState={setState} />
+              <SelectBox label="afoneofone" state={state} setState={setState} />
             </div>
             <div className="flex flex-col">
               <div className="flex justify-center">
@@ -118,6 +121,7 @@ export default function Home() {
                   <span className="flex justify-center my-4 text-3xl">X</span>
                   <div className="flex justify-center">
                     <SelectBox label="AFE" state={state} setState={setState} />
+                    <SelectBox label="afeoneofone" state={state} setState={setState} />
                   </div>
                 </div>
               </div>
